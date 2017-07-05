@@ -2,6 +2,7 @@ package com.mycompany.liteweather.util;
 
 import android.app.ProgressDialog;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.mycompany.liteweather.db.City;
 import com.mycompany.liteweather.db.County;
@@ -18,7 +19,7 @@ import org.json.JSONObject;
 public class Utility {
 
     public static boolean handleProvinceResponse(String response) {
-        if(TextUtils.isEmpty(response)){
+        if(!TextUtils.isEmpty(response)){
             try {
                 JSONArray allProvinces = new JSONArray(response);
                 for (int i = 0;i< allProvinces.length();i++){
@@ -27,6 +28,8 @@ public class Utility {
                     province.setProvinceName(provinceObject.getString("name"));
                     province.setProvinceCode(provinceObject.getInt("id"));
                     province.save();
+
+                   // Log.d("Utility","储存省份完成");
                 }
                 return true;
             } catch (JSONException e) {

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +109,7 @@ public class ChooseAreaFragment extends Fragment {
             listView.setSelection(0);
             currentLevel = LEVEL_PROVINCE;
         }else{
-            String address = "http://guolin.tech/api/china";
+            String address = "http://121.41.110.150/api/china";
             queryFromServer(address, "province");
         }
     }
@@ -131,7 +132,7 @@ public class ChooseAreaFragment extends Fragment {
             currentLevel = LEVEL_CITY;
         } else {
             int provinceCode = selectedProvince.getProvinceCode();
-            String address = "http://guolin.tech/api/china/"+provinceCode;
+            String address = "http://121.41.110.150/api/china/"+provinceCode;
             queryFromServer(address,"city");
         }
     }
@@ -153,7 +154,7 @@ public class ChooseAreaFragment extends Fragment {
         }else{
             int provinceCode = selectedProvince.getProvinceCode();
             int cityCode = selectedCity.getCityCode();
-            String address = "http://guolin.tech/api/china/"+provinceCode+"/"+cityCode;
+            String address = "http://121.41.110.150/api/china/"+provinceCode+"/"+cityCode;
             queryFromServer(address,"county");
         }
     }
@@ -164,8 +165,14 @@ public class ChooseAreaFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseText = response.body().string();
+
+                Log.d("回调：",responseText);
+
                 boolean result = false;
                 if("province".equals(type)){
+
+                    Log.d("ChooseAreaFragment","获得省份回调准备储存");
+
                     result = Utility.handleProvinceResponse(responseText);
                 }else if("city".equals(type)){
                     result = Utility.handleCityResponse(responseText,selectedProvince.getId());
